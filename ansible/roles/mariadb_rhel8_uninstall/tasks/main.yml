@@ -1,0 +1,38 @@
+- name: Stop MariaDB service
+  service:
+    name: mariadb
+    state: stopped
+  ignore_errors: yes
+
+- name: Remove MariaDB packages
+  package:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - mariadb-server
+    - mariadb
+
+- name: Remove MariaDB data directory and configuration files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/lib/mysql
+    - /etc/my.cnf.d/
+    - /etc/mysql
+  ignore_errors: yes
+
+- name: Remove MariaDB system user 
+  user:
+    name: mysql
+    state: absent
+
+- name: Remove MariaDB system group
+  group:
+    name: mysql
+    state: absent
+
+- name: Remove remaining MariaDB packages and dependencies
+  package:
+    name: "*mariadb*"
+    state: absent
