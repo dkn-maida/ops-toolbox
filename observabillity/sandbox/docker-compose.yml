@@ -19,7 +19,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana-sandbox
     ports:
-      - 51080:3000
+      - 3000:3000
     networks:
       - monitoring
     environment:
